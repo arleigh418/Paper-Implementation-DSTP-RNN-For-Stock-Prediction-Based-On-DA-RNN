@@ -484,7 +484,7 @@ class DSTP_rnn(nn.Module):
         return y_pred_price 
 
 X, y= read_data("2324.TW.csv", debug=False)
-model = DSTP_rnn(X, y, 10 , 128, 128, 128, 0.01, i)
+model = DSTP_rnn(X, y, 10 , 128, 128, 128, 0.01, 8000)
 model.train()
 torch.save(model.state_dict(), 'dstprnn_model_{}.pkl'.format(i))    
 # y_pred = model.test()
