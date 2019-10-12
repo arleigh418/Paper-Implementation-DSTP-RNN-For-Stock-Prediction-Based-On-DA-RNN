@@ -380,8 +380,8 @@ class DSTP_rnn(nn.Module):
                 val_no_update += 1
                 print('No update')
             elif val_no_update>=10:
-                torch.save(model.state_dict(), 'dstprnn_model_{0}_{1}.pkl'.format(i,loss))
-                print('Save model : ','dstprnn_model_{0}_{1}.pkl'.format(i,loss))
+                torch.save(model.state_dict(), 'dstprnn_model_{0}_{1}.pkl'.format(self.epochs,loss))
+                print('Save model : ','dstprnn_model_{0}_{1}.pkl'.format(self.epochs,loss))
                 val_no_update=0
                 continue
             
@@ -484,12 +484,10 @@ class DSTP_rnn(nn.Module):
         return y_pred_price 
 
 X, y= read_data("2324.TW.csv", debug=False)
-epoch_list = [3000,5000]
-for i in epoch_list:
-    model = DSTP_rnn(X, y, 10 , 128, 128, 128, 0.01, i)
-    model.train()
-    torch.save(model.state_dict(), 'dstprnn_model_{}.pkl'.format(i))    
-    # y_pred = model.test()
-    # y_test_real = list(y[model.train_timesteps:])
-    # result = count_values(y_test_real,y_pred)
-    # print(result)
+model = DSTP_rnn(X, y, 10 , 128, 128, 128, 0.01, i)
+model.train()
+torch.save(model.state_dict(), 'dstprnn_model_{}.pkl'.format(i))    
+# y_pred = model.test()
+# y_test_real = list(y[model.train_timesteps:])
+# result = count_values(y_test_real,y_pred)
+# print(result)
