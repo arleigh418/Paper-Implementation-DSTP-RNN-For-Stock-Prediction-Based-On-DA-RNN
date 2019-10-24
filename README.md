@@ -4,7 +4,7 @@ This Project is based on this paper : DSTP-RNN: a dual-stage two-phase attention
 # Introduction
 1. This code modify from : https://github.com/Zhenye-Na/DA-RNN (DARNN)
 2. I try to implement DSTP-RNN-I model as below picture(This paper introduce two models,please refer this paper's content).We can find that this paper combine yT with first phase attention ouput at second phase attention
-[!img](https://github.com/arleigh418/Paper-Implementation-DSTP-RNN-For-Stock-Prediction-Based-On-DA-RNN/blob/master/img/DSTP%20PAPER1.png)
+[!img] (https://github.com/arleigh418/Paper-Implementation-DSTP-RNN-For-Stock-Prediction-Based-On-DA-RNN/blob/master/img/DSTP%20PAPER1.png)
 
 3. add the second phase attention with concat yT as below code.
 ```
