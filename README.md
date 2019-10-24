@@ -3,8 +3,27 @@ This Project is based on this paper : DSTP-RNN: a dual-stage two-phase attention
 
 # Introduction
 1. This code modify from : https://github.com/Zhenye-Na/DA-RNN (DARNN)
-2. 
+2. I try to implement DSTP-RNN-I model as below picture(This paper introduce two models,please refer this paper's content).We can find that this paper combine yT with first phase attention ouput at second phase attention
+[!img](https://github.com/arleigh418/Paper-Implementation-DSTP-RNN-For-Stock-Prediction-Based-On-DA-RNN/blob/master/img/DSTP%20PAPER1.png)
 
-# Experiment Result
+3. I try to add the second phase attention with concat yT as below code.
+```
+#Phase two attention from DSTP-RNN Paper
+x2 = torch.cat((hs_n.repeat(self.input_size, 1, 1).permute(1, 0, 2), #233 363 1042
+                ss_n.repeat(self.input_size, 1, 1).permute(1, 0, 2),
+                X.permute(0, 2, 1),
+                y_prev.repeat(1, 1, self.input_size).permute(0, 2, 1)), dim=2)      
+x2 = self.encoder_attn2( 
+     x2.view(-1, self.encoder_num_hidden * 2 + 2*self.T - 2))         
+alpha2 = F.softmax(x2.view(-1, self.input_size))   
+x_tilde2 = torch.mul(alpha2, x_tilde)
+```
 
-
+4. According to my test,concat X is more better than concat x_tilde that output from first phase attention.
+```
+#Not better with concat x_tilde.
+x2 = torch.cat((hs_n.repeat(self.input_size, 1, 1).permute(1, 0, 2), #233 363 1042
+                ss_n.repeat(self.input_size, 1, 1).permute(1, 0, 2),
+                x_tilde.permute(0, 2, 1),
+                y_prev.repeat(1, 1, self.input_size).permute(0, 2, 1)), dim=2)      
+```
