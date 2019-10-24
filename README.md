@@ -5,6 +5,7 @@ This Project is based on this paper : DSTP-RNN: a dual-stage two-phase attention
 1. This code modify from : https://github.com/Zhenye-Na/DA-RNN (DARNN)
 2. I try to implement DSTP-RNN-I model as below picture(This paper introduce two models,please refer this paper's content).We can find that this paper combine yT with first phase attention ouput at second phase attention
 ![image](https://github.com/arleigh418/Paper-Implementation-DSTP-RNN-For-Stock-Prediction-Based-On-DA-RNN/blob/master/img/DSTP%20PAPER1.png)
+(Come from : DSTP-RNN: a dual-stage two-phase attention-based recurrent neural networks for long-term and multivariate time series prediction(Yeqi Liu, Chuanyang Gong, Ling Yang, Yingyi Chen) https://arxiv.org/ftp/arxiv/papers/1904/1904.07464.pdf)
 
 3. add the second phase attention with concat yT as below code.
 ```
@@ -38,4 +39,4 @@ x2 = torch.cat((hs_n.repeat(self.input_size, 1, 1).permute(1, 0, 2), #233 363 10
 
 3.If you have any questions , please contact me , cause I'm sure that there must have some misunderstanding to this paper,if you have any suggestions , please kindly let me know.
 
-## I will try to improve it !
+## I will try to keep improving it !
