@@ -125,7 +125,7 @@ class Encoder(nn.Module):
 
             x2 = torch.cat((hs_n.repeat(self.input_size, 1, 1).permute(1, 0, 2), #233 363 1042
                            ss_n.repeat(self.input_size, 1, 1).permute(1, 0, 2),
-                           x_tilde.permute(0, 2, 1),
+                           X.permute(0, 2, 1),
                            y_prev.repeat(1, 1, self.input_size).permute(0, 2, 1)), dim=2)
             
             x2 = self.encoder_attn2( 
