@@ -426,5 +426,7 @@ class DSTP_rnn(nn.Module):
 X, y= read_data("2324.TW.csv", debug=False)
 model = DSTP_rnn(X, y, 10 , 128, 128, 128, 0.001, 7000)
 model.train()
-# torch.save(model.state_dict(), 'dstprnn_model_7000.pkl')    
+torch.save(model.state_dict(), 'dstprnn_model.pkl')
+pred = model.test()
+print(pred)   
    
