@@ -318,7 +318,7 @@ class DSTP_rnn(nn.Module):
                 y_prev = np.zeros((len(indices), self.T - 1))
                 
                 # print(indices)
-                y_gt = self.y[indices + self.T-1]
+                y_gt = self.y[indices + self.T]
                 
            
                 # format x into 3D tensor
