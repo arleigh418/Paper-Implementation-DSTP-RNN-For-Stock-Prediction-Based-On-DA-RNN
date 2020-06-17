@@ -177,7 +177,7 @@ class Decoder(nn.Module):
                                         nn.Linear(encoder_num_hidden, 1))
         self.lstm_layer = nn.LSTM(
             input_size=1, hidden_size=decoder_num_hidden)
-        
+        self.fc = nn.Linear(encoder_num_hidden + 1, 1)
         self.fc_final_price = nn.Linear(decoder_num_hidden + encoder_num_hidden, 1)
         
 
@@ -316,8 +316,6 @@ class DSTP_rnn(nn.Module):
                 # x = np.zeros((self.T - 1, len(indices), self.input_size))
                 x = np.zeros((len(indices), self.T - 1, self.input_size))
                 y_prev = np.zeros((len(indices), self.T - 1))
-                
-                # print(indices)
                 y_gt = self.y[indices + self.T]
                 
            
@@ -360,7 +358,8 @@ class DSTP_rnn(nn.Module):
             Variable(torch.from_numpy(X).type(torch.FloatTensor).cuda()),Variable(torch.from_numpy(y_prev).type(torch.FloatTensor).cuda())) #cuda
         y_pred_price = self.Decoder(input_encoded, Variable(
             torch.from_numpy(y_prev).type(torch.FloatTensor)).cuda())#cuda
-       
+
+        
         y_true_price = torch.from_numpy(
             y_gt).type(torch.FloatTensor)
         
@@ -396,19 +395,23 @@ class DSTP_rnn(nn.Module):
 
 
         i = 0
-        while i < len(y_pred_price):
-            batch_idx = np.array(range(len(y_pred_price)))[i : (i + self.batch_size)]
-            # print(batch_idx)
+        while i < len(y_pred):
+            batch_idx = np.array(range(len(y_pred)))[i: (i + self.batch_size)]
             X = np.zeros((len(batch_idx), self.T - 1, self.X.shape[1]))
             y_history = np.zeros((len(batch_idx), self.T - 1))
+
             for j in range(len(batch_idx)):
                 if on_train:
-                    X[j, :, :] = self.X[range(batch_idx[j], batch_idx[j] + self.T - 1), :]
-                    y_history[j, :] = self.y[range(batch_idx[j],  batch_idx[j]+ self.T - 1)]
+                    X[j, :, :] = self.X[range(
+                        batch_idx[j], batch_idx[j] + self.T - 1), :]
+                    y_history[j, :] = self.y[range(
+                        batch_idx[j], batch_idx[j] + self.T - 1)]
                 else:
+                    X[j, :, :] = self.X[range(
+                        batch_idx[j] + self.train_timesteps - self.T, batch_idx[j] + self.train_timesteps - 1), :]
+                    y_history[j, :] = self.y[range(
+                        batch_idx[j] + self.train_timesteps - self.T, batch_idx[j] + self.train_timesteps - 1)]
 
-                    X[j, :, :] = self.X[range(batch_idx[j] + self.train_timesteps - self.T, batch_idx[j] + self.train_timesteps - 1), :]
-                    y_history[j, :] = self.y[range(batch_idx[j] + self.train_timesteps - self.T,  batch_idx[j]+ self.train_timesteps - 1)]
                     
             y_history = Variable(torch.from_numpy(y_history).type(torch.FloatTensor).cuda())
             _, input_encoded = self.Encoder(Variable(torch.from_numpy(X).type(torch.FloatTensor).cuda()),Variable(y_history).cuda()) #cuda
