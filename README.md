@@ -39,6 +39,3 @@ x2 = torch.cat((hs_n.repeat(self.input_size, 1, 1).permute(1, 0, 2), #233 363 10
 
 3. If you have any questions , please contact me , cause I'm sure that I must have some misunderstandings to this paper,if you have any suggestions , please kindly let me know.
 
-
-
-## I will  keep improving it !
