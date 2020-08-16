@@ -395,8 +395,8 @@ class DSTP_rnn(nn.Module):
 
 
         i = 0
-        while i < len(y_pred):
-            batch_idx = np.array(range(len(y_pred)))[i: (i + self.batch_size)]
+        while i < len(y_pred_price):
+            batch_idx = np.array(range(len(y_pred_price)))[i: (i + self.batch_size)]
             X = np.zeros((len(batch_idx), self.T - 1, self.X.shape[1]))
             y_history = np.zeros((len(batch_idx), self.T - 1))
 
