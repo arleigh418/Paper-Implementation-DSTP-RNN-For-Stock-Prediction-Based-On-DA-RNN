@@ -391,8 +391,6 @@ class DSTP_rnn(nn.Module):
             
         else:
             y_pred_price = np.zeros(self.X.shape[0] - self.train_timesteps)
-            
-
 
         i = 0
         while i < len(y_pred_price):
@@ -416,12 +414,11 @@ class DSTP_rnn(nn.Module):
             y_history = Variable(torch.from_numpy(y_history).type(torch.FloatTensor).cuda())
             _, input_encoded = self.Encoder(Variable(torch.from_numpy(X).type(torch.FloatTensor).cuda()),Variable(y_history).cuda()) #cuda
 
-            y_pred_price = self.Decoder(input_encoded, y_history)
+            y_pred_price_output = self.Decoder(input_encoded, y_history)
             
-            y_pred_price = y_pred_price[i:(i + self.batch_size)]
-            y_pred_price = y_pred_price.cpu().detach().numpy()[:, 0]
+            y_pred_price[i:(i + self.batch_size)] = y_pred_price_output.cpu().detach().numpy()[:, 0]
+            
            
-            
             
             i += self.batch_size
         return y_pred_price
